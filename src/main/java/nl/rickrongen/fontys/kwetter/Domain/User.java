@@ -1,5 +1,7 @@
 package nl.rickrongen.fontys.kwetter.Domain;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class User {
@@ -45,7 +47,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = hashPassword(password);
 	}
 
 	public String getFullName() {
@@ -144,5 +146,22 @@ public class User {
 	@Override
 	public boolean equals(Object o) {
 		return (o instanceof User) && ((User) o).getUsername().equals(username);
+	}
+
+	private String hashPassword(String password){
+		StringBuilder sb = new StringBuilder();
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA256");
+			md.update(password.getBytes());
+			byte[] hash = md.digest();
+			for (byte b :
+					hash) {
+				sb.append(Integer.toString((b & 0xff) + 0x100, 16));
+			}
+			return sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
