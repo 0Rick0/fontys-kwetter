@@ -64,12 +64,12 @@ class UserTest {
 
     @Test
     void getSetMentions() {
-        assertNull(user.getMentions());
+        assertNull(user.getMentionedIn());
         List<Kwet> kwets = new LinkedList<>();
         kwets.add(new Kwet(){{setText("text1");}});
         kwets.add(new Kwet(){{setText("text2");}});
-        user.setMentions(kwets);
-        assertTrue(kwets.equals(user.getMentions()));
+        user.setMentionedIn(kwets);
+        assertTrue(kwets.equals(user.getMentionedIn()));
     }
 
     @Test

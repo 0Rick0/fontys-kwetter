@@ -40,13 +40,13 @@ class KwetTest {
     void getSetTweetedBy() {
         User u = new User();
         u.setUsername("usrn");
-        kwet.setTweetedBy(u);
-        assertEquals(u.getUsername(), kwet.getTweetedBy().getUsername());
+        kwet.setKwetBy(u);
+        assertEquals(u.getUsername(), kwet.getKwetBy().getUsername());
     }
 
     @Test
     void getLikes() {
-        assertNull(kwet.getLikes());
+        assertNull(kwet.getLikedBy());
     }
 
     @Test
