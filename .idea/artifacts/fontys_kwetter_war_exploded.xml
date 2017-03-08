@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="fontys-kwetter:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/fontys_kwetter_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="fontys-kwetter/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="fontys-kwetter" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
