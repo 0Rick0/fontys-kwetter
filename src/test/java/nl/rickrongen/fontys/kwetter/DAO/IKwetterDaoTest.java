@@ -1,6 +1,6 @@
 package nl.rickrongen.fontys.kwetter.DAO;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +14,7 @@ abstract class IKwetterDaoTest<T extends IKwetterDao> {
 
     public abstract T createInstance();
 
-    @BeforeAll
+    @BeforeEach
     void setup(){
         dao = createInstance();
     }

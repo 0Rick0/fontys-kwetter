@@ -3,6 +3,7 @@ package nl.rickrongen.fontys.kwetter.Service;
 import nl.rickrongen.fontys.kwetter.DAO.*;
 import nl.rickrongen.fontys.kwetter.Domain.*;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +12,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KwetterService {
+@Stateless
+public class KwetterService{
 
     private static final Pattern reHashtag = Pattern.compile("#(\\S+)");
     private static final Pattern reMention = Pattern.compile("@(\\S+)");
@@ -85,7 +87,7 @@ public class KwetterService {
      * @return true if now following, false otherwise
 	 */
 	public boolean toggleFollow(User actor, User target) {
-	    return toggleFollow(actor,target);
+	    return kwetterDao.toggleFollowUser(actor,target);
 	}
 
 	/**
