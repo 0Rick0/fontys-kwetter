@@ -1,16 +1,26 @@
 package nl.rickrongen.fontys.kwetter.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+@Entity
 public class User {
 
+    @Id
+    @GeneratedValue
 	private int id;
 	private String username;
 	/**
 	 * sha-256
 	 */
+	@JsonIgnore
 	private String password;
 	private String fullName;
 	private String location;
@@ -23,14 +33,77 @@ public class User {
 	 * base64 image
 	 */
 	private String profilePicture;
+	@ManyToMany
+    @JoinTable(
+            name = "following",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_target", referencedColumnName = "id")
+    )
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+	@JsonIdentityReference(alwaysAsId = true)
 	private List<User> following;
+	@ManyToMany(mappedBy = "following")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+	@JsonIdentityReference(alwaysAsId = true)
 	private List<User> followedBy;
+	@ManyToMany
+    @JoinTable(
+            name = "user_groups",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
+    )
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+	@JsonIdentityReference(alwaysAsId = true)
 	private List<Group> groups;
+	@ManyToMany
+    @JoinTable(
+            name = "user_mentions",
+            joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "kwet_id", referencedColumnName = "id")
+    )
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
 	private List<Kwet> mentionedIn;
+	@OneToMany(mappedBy = "userId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
 	private List<Kwet> kwets;
+	@ManyToMany
+    @JoinTable(
+            name = "user_likes",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "kwet_id", referencedColumnName = "id")
+    )
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
 	private List<Kwet> likes;
 
-	public int getId() {
+    public User(String username, String password, String fullName, String location, String website, String biography, String profilePicture, List<User> following, List<User> followedBy, List<Group> groups, List<Kwet> mentionedIn, List<Kwet> kwets, List<Kwet> likes) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.location = location;
+        this.website = website;
+        this.biography = biography;
+        this.profilePicture = profilePicture;
+        this.following = following;
+        this.followedBy = followedBy;
+        this.groups = groups;
+        this.mentionedIn = mentionedIn;
+        this.kwets = kwets;
+        this.likes = likes;
+    }
+
+    public User(){
+        following = new ArrayList<>();
+        followedBy = new ArrayList<>();
+        groups = new ArrayList<>();
+        mentionedIn = new ArrayList<>();
+        kwets = new ArrayList<>();
+        likes = new ArrayList<>();
+    }
+
+    public int getId() {
 		return this.id;
 	}
 
@@ -151,7 +224,7 @@ public class User {
 	private String hashPassword(String password){
 		StringBuilder sb = new StringBuilder();
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA256");
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			md.update(password.getBytes());
 			byte[] hash = md.digest();
 			for (byte b :

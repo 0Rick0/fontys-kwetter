@@ -1,14 +1,24 @@
 package nl.rickrongen.fontys.kwetter.Domain;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
-public class Kwet {
+@Entity
+public class Kwet implements Serializable{
 
+    @Id
+    @GeneratedValue
 	private int id;
 	private String text;
+	@ElementCollection
 	private List<String> tags;
+	@ManyToMany(mappedBy = "user_mentions")
 	private List<User> mentions;
+	@OneToMany
+    @JoinColumn(name = "userId")
 	private User kwetBy;
+	@ManyToMany(mappedBy = "user_likes")
 	private List<User> likedBy;
 
 	public int getId() {
