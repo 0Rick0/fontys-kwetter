@@ -18,7 +18,7 @@ public class KwetterService{
     private static final Pattern reHashtag = Pattern.compile("#(\\S+)");
     private static final Pattern reMention = Pattern.compile("@(\\S+)");
 
-	@Inject
+	@Inject @JPA
 	private IKwetterDao kwetterDao;
 
 	/**

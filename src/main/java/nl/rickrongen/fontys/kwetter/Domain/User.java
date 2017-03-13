@@ -11,6 +11,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "User.getUserByName", query = "SELECT u FROM User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.getFollowingCount", query = "SELECT COUNT(u.following) FROM User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT COUNT(u.followedBy) FROM User u WHERE u.username = :username")
+})
 public class User {
 
     @Id
@@ -64,7 +69,7 @@ public class User {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
 	private List<Kwet> mentionedIn;
-	@OneToMany(mappedBy = "userId")
+	@OneToMany(mappedBy = "kwetBy")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
 	private List<Kwet> kwets;

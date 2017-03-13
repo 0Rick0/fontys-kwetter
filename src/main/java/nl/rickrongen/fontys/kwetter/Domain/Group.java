@@ -11,7 +11,7 @@ public class Group implements Serializable{
 	@GeneratedValue
 	private int id;
 	private String name;
-	@ManyToMany(mappedBy = "user_groups")
+	@ManyToMany(mappedBy = "groups")
 	private List<User> users;
 
 	public int getId() {

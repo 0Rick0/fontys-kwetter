@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
+@NamedQueries({
+		@NamedQuery(name = "Kwet.getKwetsOfUser", query = "SELECT k FROM Kwet k WHERE k.kwetBy.username = :username")
+})
 public class Kwet implements Serializable{
 
     @Id
@@ -13,12 +16,11 @@ public class Kwet implements Serializable{
 	private String text;
 	@ElementCollection
 	private List<String> tags;
-	@ManyToMany(mappedBy = "user_mentions")
+	@ManyToMany(mappedBy = "mentionedIn")
 	private List<User> mentions;
-	@OneToMany
-    @JoinColumn(name = "userId")
+	@ManyToOne()
 	private User kwetBy;
-	@ManyToMany(mappedBy = "user_likes")
+	@ManyToMany(mappedBy = "likes")
 	private List<User> likedBy;
 
 	public int getId() {
