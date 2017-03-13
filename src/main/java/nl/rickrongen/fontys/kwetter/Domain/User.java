@@ -14,7 +14,8 @@ import java.util.*;
 @NamedQueries({
         @NamedQuery(name = "User.getUserByName", query = "SELECT u FROM kwetter_user u WHERE u.username = :username"),
         @NamedQuery(name = "User.getFollowingCount", query = "SELECT COUNT(u.following) FROM kwetter_user u WHERE u.username = :username"),
-        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT COUNT(u.followedBy) FROM kwetter_user u WHERE u.username = :username")
+        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT COUNT(u.followedBy) FROM kwetter_user u WHERE u.username = :username"),
+		@NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM kwetter_user u")
 })
 public class User {
 

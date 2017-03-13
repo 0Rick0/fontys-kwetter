@@ -11,7 +11,8 @@ import java.util.*;
 @Entity(name = "kwetter_kwet")
 @NamedQueries({
 		@NamedQuery(name = "Kwet.getKwetsOfUser", query = "SELECT k FROM kwetter_kwet k WHERE k.kwetBy.username = :username"),
-        @NamedQuery(name = "Kwet.getKwetById", query = "SELECT k FROM kwetter_kwet k WHERE k.id = :id")
+        @NamedQuery(name = "Kwet.getKwetById", query = "SELECT k FROM kwetter_kwet k WHERE k.id = :id"),
+        @NamedQuery(name = "Kwet.getByTag", query = "SELECT k FROM kwetter_kwet k WHERE :tag MEMBER OF k.tags")
 })
 public class Kwet implements Serializable{
 
@@ -33,6 +34,10 @@ public class Kwet implements Serializable{
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 	@JsonIdentityReference(alwaysAsId = true)
 	private List<User> likedBy;
+	@Basic(optional = false)
+	@Column(insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date posted;
 
 	public int getId() {
 		return this.id;
@@ -78,4 +83,11 @@ public class Kwet implements Serializable{
 		this.likedBy = likedBy;
 	}
 
+    public Date getPosted() {
+        return posted;
+    }
+
+    public void setPosted(Date posted) {
+        this.posted = posted;
+    }
 }

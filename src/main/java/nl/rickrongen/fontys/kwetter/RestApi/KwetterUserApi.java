@@ -6,6 +6,7 @@ import nl.rickrongen.fontys.kwetter.Service.KwetterService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * Created by rick on 3/8/17.
@@ -15,6 +16,15 @@ public class KwetterUserApi {
 
     @Inject
     KwetterService service;
+
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SuccesObject getUsers(@QueryParam("start") @DefaultValue("0") int start,
+                                 @QueryParam("count") @DefaultValue("10") int count){
+        List<User> users = service.getUsers(start, count);
+        return new SuccesObject<>(users != null, users);
+    }
 
     @GET
     @Path("{username}")

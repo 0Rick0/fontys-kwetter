@@ -78,4 +78,8 @@ public interface IKwetterDao {
 	int getFollowingCount(String username);
 
     Kwet getKwetById(int id);
+
+    List<User> getUsers(int start, int count);
+
+	List<Kwet> getKwetsByTag(String tag, int start, int count);
 }

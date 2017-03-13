@@ -95,10 +95,14 @@ public class KwetterJpaImplementation implements IKwetterDao {
             return false;
 	    if(kwet.getLikedBy().contains(actor)){
 	        kwet.getLikedBy().remove(actor);
+	        actor.getLikes().remove(kwet);
         }else {
 	        kwet.getLikedBy().add(actor);
+	        actor.getLikes().add(kwet);
         }
-        context.persist(kwet);
+
+        context.merge(actor);
+        context.merge(kwet);
 	    return kwet.getLikedBy().contains(actor);
 	}
 
@@ -141,4 +145,21 @@ public class KwetterJpaImplementation implements IKwetterDao {
 		    return null;
         }
 	}
+
+	@Override
+	public List<User> getUsers(int start, int count) {
+		Query namedQuery = context.createNamedQuery("User.getAllUsers");
+		namedQuery.setFirstResult(start);
+		namedQuery.setMaxResults(count);
+		return (List<User>)namedQuery.getResultList();
+	}
+
+    @Override
+    public List<Kwet> getKwetsByTag(String tag, int start, int count) {
+        Query namedQuery = context.createNamedQuery("Kwet.getByTag");
+        namedQuery.setFirstResult(start);
+        namedQuery.setMaxResults(count);
+        namedQuery.setParameter("tag", tag);
+        return (List<Kwet>)namedQuery.getResultList();
+    }
 }

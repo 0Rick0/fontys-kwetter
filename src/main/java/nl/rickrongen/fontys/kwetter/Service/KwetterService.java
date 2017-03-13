@@ -134,7 +134,43 @@ public class KwetterService{
 	    return kwetterDao.getKwetsOfUser(username, start, count);
 	}
 
+    /**
+     * Let an actor like a specific kwet
+     * @param actor The actor
+     * @param kwet The kwet
+     * @return true if the user likes the kwet afterwards, false otherwise
+     */
+	public boolean likeKwet(User actor, Kwet kwet){
+	    return kwetterDao.likeKwet(actor, kwet);
+    }
+
+	/**
+	 * Get a kwet by it's ID
+	 * @param id the ID of the kwet
+	 * @return The kwet or null
+	 */
 	public Kwet getKwetById(int id) {
 		return kwetterDao.getKwetById(id);
 	}
+
+	/**
+	 * Get a list of users
+	 * @param start The first user to get
+	 * @param count The amount of users
+	 * @return A list of users or null if an error occurs
+	 */
+	public List<User> getUsers(int start, int count) {
+		return kwetterDao.getUsers(start, count);
+	}
+
+    /**
+     * Get a list of kwets that contain a specific tag (#{tag})
+     * @param tag the tag(without #)
+     * @param start the start
+     * @param count the count
+     * @return a list of kwets
+     */
+    public List<Kwet> getKwetsByTag(String tag, int start, int count) {
+	    return kwetterDao.getKwetsByTag(tag, start, count);
+    }
 }

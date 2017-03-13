@@ -37,6 +37,27 @@ public class KwetterKwetsApi {
         return new SuccesObject<>(k != null, k);
     }
 
+    @GET
+    @Path("/bytag/{tag}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SuccesObject getKwetsByTag(@PathParam("tag") String tag,
+                                      @QueryParam("start") @DefaultValue("0") int start,
+                                      @QueryParam("count") @DefaultValue("10") int count){
+        List<Kwet> found = service.getKwetsByTag(tag, start, count);
+        return new SuccesObject<>(found != null, found);
+    }
+
+    @GET
+    @Path("/byid/{id}/like/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SuccesObject likeKwet(@PathParam("id") int id, @PathParam("username") String username){
+        Kwet k = service.getKwetById(id);
+        User u = service.getUser(username);
+        if(u == null || k == null)
+            return new SuccesObject<>(false, "User or kwet not found!");
+        return new SuccesObject<>(true, service.likeKwet(u, k));
+    }
+
     @POST
     @Path("/{username}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

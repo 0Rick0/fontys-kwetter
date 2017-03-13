@@ -108,4 +108,14 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 	public Kwet getKwetById(int id) {
 		return kwets.stream().filter(k->k.getId() == id).findFirst().orElse(null);
 	}
+
+	@Override
+	public List<User> getUsers(int start, int count) {
+		return users.stream().skip(start).limit(count).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Kwet> getKwetsByTag(String tag, int start, int count) {
+		return kwets.stream().filter(k->k.getTags().contains(tag)).skip(start).limit(count).collect(Collectors.toList());
+	}
 }
