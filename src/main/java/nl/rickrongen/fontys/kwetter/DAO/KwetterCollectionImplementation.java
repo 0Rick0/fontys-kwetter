@@ -103,4 +103,9 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 	public int getFollowingCount(String username) {
 		return getUser(username).getFollowing().size();
 	}
+
+	@Override
+	public Kwet getKwetById(int id) {
+		return kwets.stream().filter(k->k.getId() == id).findFirst().orElse(null);
+	}
 }

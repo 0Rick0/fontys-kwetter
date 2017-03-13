@@ -10,20 +10,14 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by rick on 3/8/17.
  */
-@Path("api/kwetter")
-public class KwetterApi {
+@Path("user")
+public class KwetterUserApi {
 
     @Inject
     KwetterService service;
 
     @GET
-    @Produces("text/plain")
-    public String getClicheMessage(){
-        return "Kwetter API root, nothing to do here :)";
-    }
-
-    @GET
-    @Path("user/{username}")
+    @Path("{username}")
     @Produces("application/json")
     public SuccesObject getUserByName(@PathParam("username") String username){
         try{
@@ -35,7 +29,7 @@ public class KwetterApi {
     }
 
     @GET
-    @Path("user/{username}/follow/{target}")
+    @Path("{username}/follow/{target}")
     @Produces("application/json")
     public SuccesObject follow(@PathParam("username") String username, @PathParam("target") String toFollow){
         try{
@@ -48,11 +42,10 @@ public class KwetterApi {
     }
 
     @POST
-    @Path("user")
+    @Path("/")
     @Consumes("application/x-www-form-urlencoded")
     @Produces(MediaType.APPLICATION_JSON)
     public SuccesObject addUser(@FormParam("username") String username, @FormParam("password") String password, @FormParam("fullname") String fullname, @FormParam("location") String location, @FormParam("website") String website, @FormParam("biography") String biography){
         return new SuccesObject<>(service.addUser(username, fullname, password, location, website, biography), null);
     }
-
 }

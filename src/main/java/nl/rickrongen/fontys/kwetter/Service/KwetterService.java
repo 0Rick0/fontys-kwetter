@@ -133,4 +133,8 @@ public class KwetterService{
 	public List<Kwet> getKwetsOfUser(String username, int start, int count) {
 	    return kwetterDao.getKwetsOfUser(username, start, count);
 	}
+
+	public Kwet getKwetById(int id) {
+		return kwetterDao.getKwetById(id);
+	}
 }

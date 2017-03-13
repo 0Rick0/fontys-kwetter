@@ -77,4 +77,5 @@ public interface IKwetterDao {
 	 */
 	int getFollowingCount(String username);
 
+    Kwet getKwetById(int id);
 }

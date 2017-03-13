@@ -52,10 +52,13 @@ public class KwetterJpaImplementation implements IKwetterDao {
 	        return false;
 	    if(actor.getFollowing().contains(toFollow)){
 	        actor.getFollowing().remove(toFollow);
+	        toFollow.getFollowedBy().remove(actor);
         }else {
 	        actor.getFollowing().add(toFollow);
+	        toFollow.getFollowedBy().add(actor);
         }
-        context.persist(actor);
+        context.merge(actor);
+	    context.merge(toFollow);
 	    return actor.getFollowing().contains(toFollow);
 	}
 
@@ -72,6 +75,15 @@ public class KwetterJpaImplementation implements IKwetterDao {
         kwet.setTags(tags);
         kwet.setMentions(mentions);
         context.persist(kwet);
+
+        actor.getKwets().add(kwet);
+        context.merge(actor);
+        for (User m :
+                mentions) {
+            m.getMentionedIn().add(kwet);
+            context.merge(m);
+        }
+
         return true;
 	}
 
@@ -117,5 +129,16 @@ public class KwetterJpaImplementation implements IKwetterDao {
         Query namedQuery = context.createNamedQuery("User.getFollowedByCount");
         namedQuery.setParameter("username", username);
         return (int)namedQuery.getSingleResult();
+	}
+
+	@Override
+	public Kwet getKwetById(int id) {
+		Query namedQuery = context.createNamedQuery("Kwet.getKwetById");
+		namedQuery.setParameter("id", id);
+		try {
+            return (Kwet)namedQuery.getSingleResult();
+        }catch (NoResultException nre){
+		    return null;
+        }
 	}
 }

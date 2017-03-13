@@ -10,11 +10,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-@Entity
+@Entity(name = "kwetter_user")
 @NamedQueries({
-        @NamedQuery(name = "User.getUserByName", query = "SELECT u FROM User u WHERE u.username = :username"),
-        @NamedQuery(name = "User.getFollowingCount", query = "SELECT COUNT(u.following) FROM User u WHERE u.username = :username"),
-        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT COUNT(u.followedBy) FROM User u WHERE u.username = :username")
+        @NamedQuery(name = "User.getUserByName", query = "SELECT u FROM kwetter_user u WHERE u.username = :username"),
+        @NamedQuery(name = "User.getFollowingCount", query = "SELECT COUNT(u.following) FROM kwetter_user u WHERE u.username = :username"),
+        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT COUNT(u.followedBy) FROM kwetter_user u WHERE u.username = :username")
 })
 public class User {
 

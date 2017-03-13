@@ -1,12 +1,17 @@
 package nl.rickrongen.fontys.kwetter.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
-@Entity
+@Entity(name = "kwetter_kwet")
 @NamedQueries({
-		@NamedQuery(name = "Kwet.getKwetsOfUser", query = "SELECT k FROM Kwet k WHERE k.kwetBy.username = :username")
+		@NamedQuery(name = "Kwet.getKwetsOfUser", query = "SELECT k FROM kwetter_kwet k WHERE k.kwetBy.username = :username"),
+        @NamedQuery(name = "Kwet.getKwetById", query = "SELECT k FROM kwetter_kwet k WHERE k.id = :id")
 })
 public class Kwet implements Serializable{
 
@@ -17,10 +22,16 @@ public class Kwet implements Serializable{
 	@ElementCollection
 	private List<String> tags;
 	@ManyToMany(mappedBy = "mentionedIn")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+	@JsonIdentityReference(alwaysAsId = true)
 	private List<User> mentions;
 	@ManyToOne()
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+	@JsonIdentityReference(alwaysAsId = true)
 	private User kwetBy;
 	@ManyToMany(mappedBy = "likes")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+	@JsonIdentityReference(alwaysAsId = true)
 	private List<User> likedBy;
 
 	public int getId() {
