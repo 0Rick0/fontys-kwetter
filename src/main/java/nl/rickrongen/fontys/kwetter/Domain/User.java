@@ -13,8 +13,8 @@ import java.util.*;
 @Entity(name = "kwetter_user")
 @NamedQueries({
         @NamedQuery(name = "User.getUserByName", query = "SELECT u FROM kwetter_user u WHERE u.username = :username"),
-        @NamedQuery(name = "User.getFollowingCount", query = "SELECT COUNT(u.following) FROM kwetter_user u WHERE u.username = :username"),
-        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT COUNT(u.followedBy) FROM kwetter_user u WHERE u.username = :username"),
+//        @NamedQuery(name = "User.getFollowingCount", query = "SELECT size(u.following) FROM kwetter_user u WHERE u.username = :username"),
+//        @NamedQuery(name = "User.getFollowedByCount", query = "SELECT size(u.followedBy) FROM kwetter_user u WHERE u.username = :username"),
 		@NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM kwetter_user u")
 })
 public class User {
@@ -22,6 +22,7 @@ public class User {
     @Id
     @GeneratedValue
 	private int id;
+    @Column(unique = true)
 	private String username;
 	/**
 	 * sha-256
@@ -86,7 +87,7 @@ public class User {
 
     public User(String username, String password, String fullName, String location, String website, String biography, String profilePicture, List<User> following, List<User> followedBy, List<Group> groups, List<Kwet> mentionedIn, List<Kwet> kwets, List<Kwet> likes) {
         this.username = username;
-        this.password = password;
+        this.password = hashPassword(password);
         this.fullName = fullName;
         this.location = location;
         this.website = website;
@@ -235,7 +236,7 @@ public class User {
 			byte[] hash = md.digest();
 			for (byte b :
 					hash) {
-				sb.append(Integer.toString((b & 0xff) + 0x100, 16));
+				sb.append(String.format("%02X", b));
 			}
 			return sb.toString();
 		} catch (NoSuchAlgorithmException e) {

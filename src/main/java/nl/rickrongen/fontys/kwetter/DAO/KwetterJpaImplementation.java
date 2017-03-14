@@ -23,10 +23,12 @@ import java.util.stream.Collectors;
 public class KwetterJpaImplementation implements IKwetterDao {
 
     @PersistenceContext(unitName = "JaeMySQLSource")
-	private EntityManager context;
+	EntityManager context;
 
 	@Override
 	public boolean addUser(String username) {
+	    if(getUser(username) != null)
+	        return false;
 	    User u = new User();
 	    u.setUsername(username);
 	    context.persist(u);
@@ -46,6 +48,8 @@ public class KwetterJpaImplementation implements IKwetterDao {
 
 	@Override
 	public boolean toggleFollowUser(User actor, User toFollow) {
+        if(actor == null || toFollow == null)
+            return false;
 	    actor = context.merge(actor);
 	    toFollow = context.merge(toFollow);
 	    if(actor == null || toFollow == null)
@@ -89,6 +93,8 @@ public class KwetterJpaImplementation implements IKwetterDao {
 
 	@Override
 	public boolean likeKwet(User actor, Kwet kwet) {
+        if (kwet == null || actor == null)
+            return false;
 	    kwet = context.merge(kwet);
 	    actor = context.merge(actor);
 	    if (kwet == null || actor == null)
@@ -121,19 +127,19 @@ public class KwetterJpaImplementation implements IKwetterDao {
 		return null;
 	}
 
-	@Override
-	public int getFollowerCount(String username) {
-	    Query namedQuery = context.createNamedQuery("User.getFollowingCount");
-	    namedQuery.setParameter("username", username);
-	    return (int)namedQuery.getSingleResult();
-	}
-
-	@Override
-	public int getFollowingCount(String username) {
-        Query namedQuery = context.createNamedQuery("User.getFollowedByCount");
-        namedQuery.setParameter("username", username);
-        return (int)namedQuery.getSingleResult();
-	}
+//	@Override
+//	public int getFollowerCount(String username) {
+//	    Query namedQuery = context.createNamedQuery("User.getFollowingCount");
+//	    namedQuery.setParameter("username", username);
+//	    return (int) ((Long)namedQuery.getSingleResult()).longValue();
+//	}
+//
+//	@Override
+//	public int getFollowingCount(String username) {
+//        Query namedQuery = context.createNamedQuery("User.getFollowedByCount");
+//        namedQuery.setParameter("username", username);
+//        return (int) ((Long)namedQuery.getSingleResult()).longValue();
+//	}
 
 	@Override
 	public Kwet getKwetById(int id) {

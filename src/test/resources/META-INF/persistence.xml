@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="JaeMySQLTestSource" transaction-type="RESOURCE_LOCAL">
+        <jta-data-source>JaeMySQLSource</jta-data-source>
+        <class>nl.rickrongen.fontys.kwetter.Domain.User</class>
+        <class>nl.rickrongen.fontys.kwetter.Domain.Kwet</class>
+        <class>nl.rickrongen.fontys.kwetter.Domain.Group</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <properties>
+            <!-- derby -->
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:test-jpa;create=true"/>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+            <property name="javax.persistence.jdbc.user" value="APP"/>
+            <property name="javax.persistence.jdbc.password" value="APP"/>
+
+            <!-- eclipseliknk specific -->
+            <property name="eclipselink.target-database" value="Derby"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.debug" value="ALL"/>
+            <property name="eclipselink.weaving" value="static"/>
+            <property name="eclipselink.logging.level" value="FINEST"/>
+            <property name="eclipselink.logging.level.sql" value="FINEST"/>
+            <property name="eclipselink.logging.level.cache" value="FINEST"/>
+        </properties>
+    </persistence-unit>
+</persistence>

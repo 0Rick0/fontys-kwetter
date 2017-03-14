@@ -3,8 +3,7 @@ package nl.rickrongen.fontys.kwetter.Domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,8 +44,21 @@ class KwetTest {
     }
 
     @Test
-    void getLikes() {
+    void getSetLikes() {
         assertNull(kwet.getLikedBy());
+        List<User> likes = new ArrayList<>();
+        kwet.setLikedBy(likes);
+        assertEquals(likes, kwet.getLikedBy());
+    }
+
+    @Test
+    void getSetMentions(){
+        assertNull(kwet.getMentions());
+        List<User> mentions = new ArrayList<>();
+        mentions.add(new User());
+        mentions.add(new User());
+        kwet.setMentions(mentions);
+        assertEquals(mentions, kwet.getMentions());
     }
 
     @Test
@@ -54,4 +66,10 @@ class KwetTest {
         assertEquals(0, kwet.getId());
     }
 
+    @Test
+    void getSetPosted(){
+        Date d = Calendar.getInstance().getTime();
+        kwet.setPosted(d);
+        assertEquals(d, kwet.getPosted());
+    }
 }

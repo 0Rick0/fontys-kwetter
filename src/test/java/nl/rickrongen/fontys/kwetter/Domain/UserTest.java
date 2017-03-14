@@ -3,10 +3,7 @@ package nl.rickrongen.fontys.kwetter.Domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +15,43 @@ class UserTest {
     @BeforeEach
     void setUp() {
         user = new User();
+    }
+
+    @Test
+    void constructorTest(){
+        List<User> following = Arrays.asList(user);
+        List<User> followedBy = Arrays.asList(user);
+        List<Group> groups = Arrays.asList(new Group(), new Group());
+        Kwet testkwet = new Kwet();
+        List<Kwet> mentionedIn = Arrays.asList(testkwet);
+        List<Kwet> kwets = Arrays.asList(testkwet);
+        List<Kwet> like = Arrays.asList(testkwet);
+        User u = new User("username_test",
+                "password",
+                "Full Name",
+                "Location",
+                "WebSite",
+                "Bio",
+                "BASE64 image",
+                following,
+                followedBy,
+                groups,
+                mentionedIn,
+                kwets,
+                like);
+        assertEquals("username_test", u.getUsername());
+        assertEquals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8".toUpperCase(), u.getPassword());
+        assertEquals("Full Name", u.getFullName());
+        assertEquals("Location", u.getLocation());
+        assertEquals("WebSite", u.getWebsite());
+        assertEquals("Bio", u.getBiography());
+        assertEquals("BASE64 image", u.getProfilePicture());
+        assertEquals(following, u.getFollowing());
+        assertEquals(followedBy, u.getFollowedBy());
+        assertEquals(groups, u.getGroups());
+        assertEquals(mentionedIn, u.getMentionedIn());
+        assertEquals(kwets, u.getKwets());
+        assertEquals(like, u.getLikes());
     }
 
     @Test
@@ -64,7 +98,7 @@ class UserTest {
 
     @Test
     void getSetMentions() {
-        assertNull(user.getMentionedIn());
+        assertTrue(user.getMentionedIn().isEmpty());
         List<Kwet> kwets = new LinkedList<>();
         kwets.add(new Kwet(){{setText("text1");}});
         kwets.add(new Kwet(){{setText("text2");}});
@@ -74,7 +108,7 @@ class UserTest {
 
     @Test
     void getSetFollowing() {
-        assertNull(user.getFollowing());
+        assertTrue(user.getFollowing().isEmpty());
         List<User> others = new LinkedList<>();
         others.add(new User(){{user.setUsername("usr1");}});
         others.add(new User(){{user.setUsername("usr2");}});
@@ -84,7 +118,7 @@ class UserTest {
 
     @Test
     void getSetLikes() {
-        assertNull(user.getLikes());
+        assertTrue(user.getLikes().isEmpty());
         List<Kwet> kwets = new LinkedList<>();
         kwets.add(new Kwet(){{setText("text1");}});
         kwets.add(new Kwet(){{setText("text2");}});
@@ -99,12 +133,32 @@ class UserTest {
 
     @Test
     void getSetFollowedBy() {
-        assertNull(user.getFollowedBy());
+        assertTrue(user.getFollowedBy().isEmpty());
         List<User> others = new LinkedList<>();
         others.add(new User(){{user.setUsername("usr1");}});
         others.add(new User(){{user.setUsername("usr2");}});
         user.setFollowedBy(others);
         assertTrue(others.equals(user.getFollowedBy()));
+    }
+
+    @Test
+    void getSetKwets() {
+        assertTrue(user.getKwets().isEmpty());
+        List<Kwet> kwets = new LinkedList<>();
+        kwets.add(new Kwet(){{setText("text1");}});
+        kwets.add(new Kwet(){{setText("text2");}});
+        user.setKwets(kwets);
+        assertTrue(kwets.equals(user.getKwets()));
+    }
+
+    @Test
+    void getSetGroups() {
+        assertTrue(user.getGroups().isEmpty());
+        List<Group> groups = new LinkedList<>();
+        groups.add(new Group());
+        groups.add(new Group());
+        user.setGroups(groups);
+        assertTrue(groups.equals(user.getGroups()));
     }
 
     @Test
@@ -116,5 +170,12 @@ class UserTest {
         assertTrue(users.add(new User(){{setUsername("user2");}}));
         assertTrue(users.add(new User(){{setUsername("user3");}}));
         assertFalse(users.add(new User(){{setUsername("user1");}}));
+    }
+
+    @Test
+    void testPassword(){
+        assertNull(user.getPassword());
+        user.setPassword("test");
+        assertEquals("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08".toUpperCase(), user.getPassword());
     }
 }

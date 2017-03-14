@@ -10,4 +10,9 @@ class KwetterCollectionImplementationTest extends IKwetterDaoTest<KwetterCollect
     public KwetterCollectionImplementation createInstance() {
         return new KwetterCollectionImplementation();
     }
+
+    @Override
+    public void flush() {
+        //do nothing
+    }
 }

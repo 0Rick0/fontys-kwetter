@@ -29,6 +29,8 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 
 	@Override
 	public boolean toggleFollowUser(User actor, User toFollow) {
+	    if(actor == null || toFollow == null)
+	        return false;
 	    // create the list, if necesairy
 	    if(actor.getFollowing() == null)
 	        actor.setFollowing(new ArrayList<>());
@@ -39,7 +41,7 @@ public class KwetterCollectionImplementation implements IKwetterDao {
         if(actor.getFollowing().contains(toFollow)){
             actor.getFollowing().remove(toFollow);
             toFollow.getFollowedBy().remove(actor);
-            return true;
+            return false;
         }else{
             actor.getFollowing().add(toFollow);
             toFollow.getFollowedBy().add(actor);
@@ -73,7 +75,16 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 
 	@Override
 	public boolean likeKwet(User actor, Kwet kwet) {
+	    if(actor == null || kwet == null)
+	        return false;
+	    if(kwet.getLikedBy() == null)
+	        kwet.setLikedBy(new ArrayList<>());
 	    //todo check null
+        if(kwet.getLikedBy().contains(actor)){
+            kwet.getLikedBy().remove(actor);
+            actor.getLikes().remove(kwet);
+            return false;
+        }
 	    kwet.getLikedBy().add(actor);
 	    actor.getLikes().add(kwet);
 		return true;
@@ -82,7 +93,7 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 	@Override
 	public List<Kwet> getKwetsOfUser(String username, int start, int count) {
         User user = getUser(username);
-        return user.getKwets().subList(start,count);
+        return user.getKwets().stream().skip(start).limit(count).collect(Collectors.toList());
 	}
 
 	@Override
@@ -92,15 +103,15 @@ public class KwetterCollectionImplementation implements IKwetterDao {
                 || kwet.getMentions().stream().anyMatch(m->mentions.stream().anyMatch(m2->m.getUsername().equals(m2)))).skip(start).limit(count).collect(Collectors.toList());
 	}
 
-	@Override
-	public int getFollowerCount(String username) {
-		return getUser(username).getFollowedBy().size();
-	}
-
-	@Override
-	public int getFollowingCount(String username) {
-		return getUser(username).getFollowing().size();
-	}
+//	@Override
+//	public int getFollowerCount(String username) {
+//		return getUser(username).getFollowedBy().size();
+//	}
+//
+//	@Override
+//	public int getFollowingCount(String username) {
+//		return getUser(username).getFollowing().size();
+//	}
 
 	@Override
 	public Kwet getKwetById(int id) {

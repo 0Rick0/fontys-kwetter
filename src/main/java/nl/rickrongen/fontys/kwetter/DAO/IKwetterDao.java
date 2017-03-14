@@ -56,7 +56,7 @@ public interface IKwetterDao {
 	java.util.List<Kwet> getKwetsOfUser(String username, int start, int count);
 
 	/**
-	 * 
+	 *
 	 * @param texts
 	 * @param tags
 	 * @param mentions
@@ -65,17 +65,17 @@ public interface IKwetterDao {
 	 */
 	java.util.List<Kwet> searchKwets(List<String> texts, List<String> tags, List<String> mentions, int start, int count);
 
-	/**
-	 * 
-	 * @param username
-	 */
-	int getFollowerCount(String username);
+//	/**
+//	 *
+//	 * @param username
+//	 */
+//	int getFollowerCount(String username);
 
-	/**
-	 * 
-	 * @param username
-	 */
-	int getFollowingCount(String username);
+//	/**
+//	 *
+//	 * @param username
+//	 */
+//	int getFollowingCount(String username);
 
     Kwet getKwetById(int id);
 
