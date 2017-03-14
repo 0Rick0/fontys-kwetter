@@ -3,6 +3,7 @@ package nl.rickrongen.fontys.kwetter.RestApi;
 import nl.rickrongen.fontys.kwetter.Domain.Kwet;
 import nl.rickrongen.fontys.kwetter.Domain.User;
 import nl.rickrongen.fontys.kwetter.Service.KwetterService;
+import nl.rickrongen.fontys.kwetter.interceptors.Log;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by rick on 3/13/17.
  */
 @Path("/kwets")
+@Log
 public class KwetterKwetsApi {
 
     @Inject
