@@ -173,4 +173,13 @@ public class KwetterService{
     public List<Kwet> getKwetsByTag(String tag, int start, int count) {
 	    return kwetterDao.getKwetsByTag(tag, start, count);
     }
+
+	/**
+	 * Get a list of kwets that are relavent to the user
+	 * @param user The user to get the feed of
+	 * @return A list of kwets
+	 */
+	public List<Kwet> getUserFeed(User user, int start, int count) {
+	    return kwetterDao.getUserFeed(user, start, count);
+	}
 }

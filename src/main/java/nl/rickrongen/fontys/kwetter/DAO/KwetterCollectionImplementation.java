@@ -87,11 +87,9 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 
 	@Override
 	public List<Kwet> searchKwets(List<String> texts, List<String> tags, List<String> mentions, int start, int count) {
-	    return kwets.stream().filter(kwet -> {
-	        return texts.stream().anyMatch(t->kwet.getText().contains(t))
-                    || kwet.getTags().stream().anyMatch(t->tags.stream().anyMatch(t2->t2.equals(t)))
-                    || kwet.getMentions().stream().anyMatch(m->mentions.stream().anyMatch(m2->m.getUsername().equals(m2)));
-	    }).skip(start).limit(count).collect(Collectors.toList());
+	    return kwets.stream().filter(kwet -> texts.stream().anyMatch(t->kwet.getText().contains(t))
+                || kwet.getTags().stream().anyMatch(t->tags.stream().anyMatch(t2->t2.equals(t)))
+                || kwet.getMentions().stream().anyMatch(m->mentions.stream().anyMatch(m2->m.getUsername().equals(m2)))).skip(start).limit(count).collect(Collectors.toList());
 	}
 
 	@Override
@@ -117,5 +115,14 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 	@Override
 	public List<Kwet> getKwetsByTag(String tag, int start, int count) {
 		return kwets.stream().filter(k->k.getTags().contains(tag)).skip(start).limit(count).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Kwet> getUserFeed(User user, int start, int count) {
+		return user.getFollowing().stream()
+                .flatMap(u-> u.getKwets().stream())
+                .sorted(Comparator.comparing(Kwet::getPosted))
+                .skip(start).limit(count)
+                .collect(Collectors.toList());
 	}
 }

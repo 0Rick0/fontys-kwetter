@@ -12,7 +12,14 @@ import java.util.*;
 @NamedQueries({
 		@NamedQuery(name = "Kwet.getKwetsOfUser", query = "SELECT k FROM kwetter_kwet k WHERE k.kwetBy.username = :username"),
         @NamedQuery(name = "Kwet.getKwetById", query = "SELECT k FROM kwetter_kwet k WHERE k.id = :id"),
-        @NamedQuery(name = "Kwet.getByTag", query = "SELECT k FROM kwetter_kwet k WHERE :tag MEMBER OF k.tags")
+        @NamedQuery(name = "Kwet.getByTag", query = "SELECT k FROM kwetter_kwet k WHERE :tag MEMBER OF k.tags"),
+		@NamedQuery(name = "Kwet.getFeed", query = "SELECT k FROM kwetter_kwet k " +
+				"INNER JOIN kwetter_user u1 " +
+				"INNER JOIN kwetter_user u2 " +
+				"WHERE u2.username = :username " +
+				"AND u1 MEMBER OF u2.following " +
+				"AND k MEMBER OF u2.kwets " +
+				"ORDER BY k.posted DESC")
 })
 public class Kwet implements Serializable{
 

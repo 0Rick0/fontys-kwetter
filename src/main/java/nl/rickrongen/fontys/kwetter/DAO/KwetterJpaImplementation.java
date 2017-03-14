@@ -162,4 +162,13 @@ public class KwetterJpaImplementation implements IKwetterDao {
         namedQuery.setParameter("tag", tag);
         return (List<Kwet>)namedQuery.getResultList();
     }
+
+	@Override
+	public List<Kwet> getUserFeed(User user, int start, int count) {
+		Query namedQuery = context.createNamedQuery("Kwet.getFeed");
+		namedQuery.setFirstResult(start);
+		namedQuery.setMaxResults(count);
+		namedQuery.setParameter("username", user.getUsername());
+		return (List<Kwet>)namedQuery.getResultList();
+	}
 }

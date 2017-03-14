@@ -4,7 +4,6 @@ import nl.rickrongen.fontys.kwetter.Domain.Kwet;
 import nl.rickrongen.fontys.kwetter.Domain.User;
 import nl.rickrongen.fontys.kwetter.Service.KwetterService;
 
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -27,6 +26,17 @@ public class KwetterKwetsApi {
                                        @QueryParam("count") @DefaultValue("10") int count){
         List<Kwet> kwetsOfUser = service.getKwetsOfUser(usersname, start, count);
         return new SuccesObject<>(kwetsOfUser != null, kwetsOfUser);
+    }
+
+    @GET
+    @Path("/feed/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SuccesObject getFeedOfUser(@PathParam("username") String usersname,
+                                      @QueryParam("start") @DefaultValue("0") int start,
+                                      @QueryParam("count") @DefaultValue("10") int count){
+        User u = service.getUser(usersname);
+        List<Kwet> feed = service.getUserFeed(u, start, count);
+        return new SuccesObject<>(true, feed);
     }
 
     @GET
