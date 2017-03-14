@@ -19,7 +19,7 @@ public class KwetterService{
     private static final Pattern reMention = Pattern.compile("@(\\S+)");
 
 	@Inject @JPA
-	private IKwetterDao kwetterDao;
+	IKwetterDao kwetterDao;
 
 	/**
 	 * Get the user object connected to a specific username
