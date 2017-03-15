@@ -40,7 +40,7 @@ class UserTest {
                 kwets,
                 like);
         assertEquals("username_test", u.getUsername());
-        assertEquals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8".toUpperCase(), u.getPassword());
+        assertEquals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8", u.getPassword());
         assertEquals("Full Name", u.getFullName());
         assertEquals("Location", u.getLocation());
         assertEquals("WebSite", u.getWebsite());
@@ -176,6 +176,6 @@ class UserTest {
     void testPassword(){
         assertNull(user.getPassword());
         user.setPassword("test");
-        assertEquals("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08".toUpperCase(), user.getPassword());
+        assertEquals("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", user.getPassword());
     }
 }

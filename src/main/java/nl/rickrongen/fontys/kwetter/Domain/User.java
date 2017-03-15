@@ -236,7 +236,7 @@ public class User {
 			byte[] hash = md.digest();
 			for (byte b :
 					hash) {
-				sb.append(String.format("%02X", b));
+				sb.append(String.format("%02x", b));
 			}
 			return sb.toString();
 		} catch (NoSuchAlgorithmException e) {
