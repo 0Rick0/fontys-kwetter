@@ -32,6 +32,8 @@ public class KwetterJpaImplementation implements IKwetterDao {
 	    User u = new User();
 	    u.setUsername(username);
 	    context.persist(u);
+	    context.flush();
+	    context.refresh(u);
 		return u.getId()!=0;
 	}
 

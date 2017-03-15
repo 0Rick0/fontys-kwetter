@@ -7,8 +7,11 @@ import nl.rickrongen.fontys.kwetter.interceptors.Log;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by rick on 3/13/17.
@@ -74,7 +77,9 @@ public class KwetterKwetsApi {
     @Path("/{username}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public SuccesObject postKwet(@PathParam("username") String username, @FormParam("text") String text){
+    public SuccesObject postKwet(@PathParam("username") String username, @FormParam("text") String text, @Context SecurityContext ctx){
+        if(!Objects.equals(username, ctx.getUserPrincipal().getName()))
+            return new SuccesObject<>(false, "You can only post for your self!");
         User u = service.getUser(username);
         if(u == null)
             return new SuccesObject<>(false, "User not found");

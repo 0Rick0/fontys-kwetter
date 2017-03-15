@@ -24,7 +24,7 @@ import java.util.*;
 public class Kwet implements Serializable{
 
     @Id
-    @GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String text;
 	@ElementCollection

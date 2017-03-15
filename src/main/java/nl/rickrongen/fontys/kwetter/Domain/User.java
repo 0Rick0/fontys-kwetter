@@ -20,9 +20,9 @@ import java.util.*;
 public class User {
 
     @Id
-    @GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-    @Column(unique = true)
+    @Column(unique = true, length = 64)
 	private String username;
 	/**
 	 * sha-256
@@ -35,6 +35,7 @@ public class User {
 	/**
 	 * max len 160
 	 */
+	@Column(length = 160)
 	private String biography;
 	/**
 	 * base64 image
