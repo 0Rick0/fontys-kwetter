@@ -179,4 +179,19 @@ public class KwetterJpaImplementation implements IKwetterDao {
 		namedQuery.setParameter("username", user.getUsername());
 		return (List<Kwet>)namedQuery.getResultList();
 	}
+
+    @Override
+    public List<String> getTrendingKwets() {
+        Query nativeQuery = context.createNativeQuery(
+                "SELECT DISTINCT TAGS " +
+                "FROM kwetter_kwet_TAGS " +
+                "WHERE kwetter_kwet_ID IN (" +
+                "   SELECT ID " +
+                "   FROM KWETTER_KWET " +
+                "   WHERE POSTED > DATE_SUB(now(), INTERVAL 1 MONTH) " +
+                "   ORDER BY POSTED DESC) " + // NOTE: MariaDB doesn't support LIMIT in subquery
+                "ORDER BY count(TAGS) " +
+                "LIMIT 5;");
+        return (List<String>)nativeQuery.getResultList();
+    }
 }

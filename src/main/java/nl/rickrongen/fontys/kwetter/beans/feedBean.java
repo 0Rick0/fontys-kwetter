@@ -7,8 +7,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 /**
@@ -24,5 +22,9 @@ public class feedBean {
     public List<Kwet> getFeed(){
         String username = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
         return service.getUserFeed(service.getUser(username), 0, 10);  //todo improve
+    }
+
+    public List<String> getTrendingTags(){
+        return service.getTrendingKwets();
     }
 }

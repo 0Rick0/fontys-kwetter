@@ -1,12 +1,15 @@
 package nl.rickrongen.fontys.kwetter.DAO;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import nl.rickrongen.fontys.kwetter.Domain.*;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
+
+import static java.util.Collections.reverseOrder;
 
 /**
  * Created by rick on 2/15/17.
@@ -135,5 +138,14 @@ public class KwetterCollectionImplementation implements IKwetterDao {
                 .sorted(Comparator.comparing(Kwet::getPosted))
                 .skip(start).limit(count)
                 .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<String> getTrendingKwets() {
+		return kwets.stream().limit(100).flatMap(kwet -> kwet.getTags().stream())
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet().stream()
+				.sorted(Map.Entry.<String, Long> comparingByValue(reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
+				.limit(5).map(Map.Entry::getKey).collect(Collectors.toList());
 	}
 }

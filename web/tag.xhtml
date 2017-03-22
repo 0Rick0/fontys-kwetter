@@ -49,7 +49,7 @@
                 <ul id="trendsList">
                     <ui:repeat value="#{feedBean.trendingTags}" var="tag">
                         <li class="trendingtopic">
-                            <h:link outcome="tag"  value="\##{tag}">
+                            <h:link outcome="tagsearch"  value="\##{tag}">
                                 <f:param name="tag" value="#{tag}"/>
                             </h:link>
                         </li>

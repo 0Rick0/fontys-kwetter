@@ -53,6 +53,7 @@ public class KwetterService{
 	 * @param location The location
 	 * @param website The website
 	 * @param biography The biography of max 160
+	 * @exception IllegalArgumentException Thrown when one of the arguments is not valid
 	 */
 	public boolean addUser(String username, String fullName, String password, String location, String website, String biography) throws IllegalArgumentException
     {
@@ -181,5 +182,13 @@ public class KwetterService{
 	 */
 	public List<Kwet> getUserFeed(User user, int start, int count) {
 	    return kwetterDao.getUserFeed(user, start, count);
+	}
+
+    /**
+     * Get a list of trending topics
+     * @return A list of Strings
+     */
+	public List<String> getTrendingKwets(){
+		return kwetterDao.getTrendingKwets();
 	}
 }

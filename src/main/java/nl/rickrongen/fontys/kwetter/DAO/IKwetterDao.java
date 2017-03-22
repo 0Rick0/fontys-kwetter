@@ -84,4 +84,6 @@ public interface IKwetterDao {
 	List<Kwet> getKwetsByTag(String tag, int start, int count);
 
     List<Kwet> getUserFeed(User user, int start, int count);
+
+    List<String> getTrendingKwets();
 }
