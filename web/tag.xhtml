@@ -12,12 +12,12 @@
         <link rel="stylesheet" type="text/css" href="styles/style.css"/>
     </h:head>
     <div id="header">
-        <span class="search">
-            <h:form target="search">
-                <h:inputText value="#{search.query}" id="search" />
-                <h:commandButton value="Search"  />
-            </h:form>
-        </span>
+        <div class="search">
+            <form action="search.xhtml" method="get">
+                <input type="text" name="search" id="form"/>
+                <input type="submit" value="Search"/>
+            </form>
+        </div>
     </div>
     <div id="twocolContainer">
         <div class="colTwoCol">

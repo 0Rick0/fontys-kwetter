@@ -15,18 +15,32 @@
         <span class="search">
             <h:form target="search">
                 <h:inputText value="#{search.query}" id="search" />
-                <h:commandButton value="Search"  />
+                <h:commandButton value="#{local['search.button']}"  />
+            </h:form>
+        </span>
+        <span class="languangeSelect">
+                <h:form>
+                <p:outputLabel value="#{local['language.select']}"/>
+                    <h:selectOneMenu value="#{locale.localeCode}" onchange="submit()"
+                                     valueChangeListener="#{locale.countryLocaleCodeChanged}">
+                    <f:selectItems value="#{locale.countries}"/>
+                </h:selectOneMenu>
             </h:form>
         </span>
     </div>
     <div id="twocolContainer">
         <div class="colTwoCol">
             <div id="newTweetForm">
-                New Tweet
+                <h:form id="postKwetForm">
+                    <h:inputText value="#{poster.text}" required="true" id="postKwetText"/>
+                    <h:commandButton value="#{local['kwet.post']}" action="#{poster.postKwet}"/>
+                    <h:messages/>
+                    <h:outputText value="#{poster.result == null ? '' : local[poster.result]}"/>
+                </h:form>
             </div>
             <div id="timeline">
                 <p:tabView dynamic="true" cache="true">
-                    <p:tab title="Feed">
+                    <p:tab title="#{local['feed.title']}">
                         <ul id="kwetFeed">
                             <ui:repeat value="#{feedBean.feed}" var="kwet">
                                 <ul class="kwet">
@@ -36,7 +50,7 @@
                             </ui:repeat>
                         </ul>
                     </p:tab>
-                    <p:tab title="Mentions">
+                    <p:tab title="#{local['mentions.title']}">
                         Mentions
                     </p:tab>
                 </p:tabView>

@@ -23,58 +23,58 @@ import java.util.stream.Collectors;
 public class KwetterJpaImplementation implements IKwetterDao {
 
     @PersistenceContext(unitName = "JaeMySQLSource")
-	EntityManager context;
+    EntityManager context;
 
-	@Override
-	public boolean addUser(String username) {
-	    if(getUser(username) != null)
-	        return false;
-	    User u = new User();
-	    u.setUsername(username);
-	    context.persist(u);
-	    context.flush();
-	    context.refresh(u);
-		return u.getId()!=0;
-	}
+    @Override
+    public boolean addUser(String username) {
+        if (getUser(username) != null)
+            return false;
+        User u = new User();
+        u.setUsername(username);
+        context.persist(u);
+        context.flush();
+        context.refresh(u);
+        return u.getId() != 0;
+    }
 
-	@Override
-	public User getUser(String username) {
+    @Override
+    public User getUser(String username) {
         Query namedQuery = context.createNamedQuery("User.getUserByName");
         namedQuery.setParameter("username", username);
         try {
-            return (User)namedQuery.getSingleResult();
-        }catch (NoResultException nre){
+            return (User) namedQuery.getSingleResult();
+        } catch (NoResultException nre) {
             return null;
         }
-	}
+    }
 
-	@Override
-	public boolean toggleFollowUser(User actor, User toFollow) {
-        if(actor == null || toFollow == null)
+    @Override
+    public boolean toggleFollowUser(User actor, User toFollow) {
+        if (actor == null || toFollow == null)
             return false;
-	    actor = context.merge(actor);
-	    toFollow = context.merge(toFollow);
-	    if(actor == null || toFollow == null)
-	        return false;
-	    if(actor.getFollowing().contains(toFollow)){
-	        actor.getFollowing().remove(toFollow);
-	        toFollow.getFollowedBy().remove(actor);
-        }else {
-	        actor.getFollowing().add(toFollow);
-	        toFollow.getFollowedBy().add(actor);
+        actor = context.merge(actor);
+        toFollow = context.merge(toFollow);
+        if (actor == null || toFollow == null)
+            return false;
+        if (actor.getFollowing().contains(toFollow)) {
+            actor.getFollowing().remove(toFollow);
+            toFollow.getFollowedBy().remove(actor);
+        } else {
+            actor.getFollowing().add(toFollow);
+            toFollow.getFollowedBy().add(actor);
         }
         context.merge(actor);
-	    context.merge(toFollow);
-	    return actor.getFollowing().contains(toFollow);
-	}
+        context.merge(toFollow);
+        return actor.getFollowing().contains(toFollow);
+    }
 
-	@Override
-	public boolean updateUser(User actor) {
-	    return context.merge(actor) != null;
-	}
+    @Override
+    public boolean updateUser(User actor) {
+        return context.merge(actor) != null;
+    }
 
-	@Override
-	public boolean postKwet(User actor, String text, List<String> tags, List<User> mentions) {
+    @Override
+    public boolean postKwet(User actor, String text, List<String> tags, List<User> mentions) {
         Kwet kwet = new Kwet();
         kwet.setText(text);
         kwet.setKwetBy(actor);
@@ -91,43 +91,43 @@ public class KwetterJpaImplementation implements IKwetterDao {
         }
 
         return true;
-	}
+    }
 
-	@Override
-	public boolean likeKwet(User actor, Kwet kwet) {
+    @Override
+    public boolean likeKwet(User actor, Kwet kwet) {
         if (kwet == null || actor == null)
             return false;
-	    kwet = context.merge(kwet);
-	    actor = context.merge(actor);
-	    if (kwet == null || actor == null)
+        kwet = context.merge(kwet);
+        actor = context.merge(actor);
+        if (kwet == null || actor == null)
             return false;
-	    if(kwet.getLikedBy().contains(actor)){
-	        kwet.getLikedBy().remove(actor);
-	        actor.getLikes().remove(kwet);
-        }else {
-	        kwet.getLikedBy().add(actor);
-	        actor.getLikes().add(kwet);
+        if (kwet.getLikedBy().contains(actor)) {
+            kwet.getLikedBy().remove(actor);
+            actor.getLikes().remove(kwet);
+        } else {
+            kwet.getLikedBy().add(actor);
+            actor.getLikes().add(kwet);
         }
 
         context.merge(actor);
         context.merge(kwet);
-	    return kwet.getLikedBy().contains(actor);
-	}
+        return kwet.getLikedBy().contains(actor);
+    }
 
-	@Override
-	public List<Kwet> getKwetsOfUser(String username, int start, int count) {
+    @Override
+    public List<Kwet> getKwetsOfUser(String username, int start, int count) {
         Query namedQuery = context.createNamedQuery("Kwet.getKwetsOfUser");
         namedQuery.setParameter("username", username);
         namedQuery.setFirstResult(start);
         namedQuery.setMaxResults(count);
         List resultList = namedQuery.getResultList();
-        return (List<Kwet>)resultList;
+        return (List<Kwet>) resultList;
     }
 
-	@Override
-	public List<Kwet> searchKwets(List<String> texts, List<String> tags, List<String> mentions, int start, int count) {
-		return null;
-	}
+    @Override
+    public List<Kwet> searchKwets(List<String> texts, List<String> tags, List<String> mentions, int start, int count) {
+        return null;
+    }
 
 //	@Override
 //	public int getFollowerCount(String username) {
@@ -143,24 +143,24 @@ public class KwetterJpaImplementation implements IKwetterDao {
 //        return (int) ((Long)namedQuery.getSingleResult()).longValue();
 //	}
 
-	@Override
-	public Kwet getKwetById(int id) {
-		Query namedQuery = context.createNamedQuery("Kwet.getKwetById");
-		namedQuery.setParameter("id", id);
-		try {
-            return (Kwet)namedQuery.getSingleResult();
-        }catch (NoResultException nre){
-		    return null;
+    @Override
+    public Kwet getKwetById(int id) {
+        Query namedQuery = context.createNamedQuery("Kwet.getKwetById");
+        namedQuery.setParameter("id", id);
+        try {
+            return (Kwet) namedQuery.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
         }
-	}
+    }
 
-	@Override
-	public List<User> getUsers(int start, int count) {
-		Query namedQuery = context.createNamedQuery("User.getAllUsers");
-		namedQuery.setFirstResult(start);
-		namedQuery.setMaxResults(count);
-		return (List<User>)namedQuery.getResultList();
-	}
+    @Override
+    public List<User> getUsers(int start, int count) {
+        Query namedQuery = context.createNamedQuery("User.getAllUsers");
+        namedQuery.setFirstResult(start);
+        namedQuery.setMaxResults(count);
+        return (List<User>) namedQuery.getResultList();
+    }
 
     @Override
     public List<Kwet> getKwetsByTag(String tag, int start, int count) {
@@ -168,30 +168,31 @@ public class KwetterJpaImplementation implements IKwetterDao {
         namedQuery.setFirstResult(start);
         namedQuery.setMaxResults(count);
         namedQuery.setParameter("tag", tag);
-        return (List<Kwet>)namedQuery.getResultList();
+        return (List<Kwet>) namedQuery.getResultList();
     }
 
-	@Override
-	public List<Kwet> getUserFeed(User user, int start, int count) {
-		Query namedQuery = context.createNamedQuery("Kwet.getFeed");
-		namedQuery.setFirstResult(start);
-		namedQuery.setMaxResults(count);
-		namedQuery.setParameter("username", user.getUsername());
-		return (List<Kwet>)namedQuery.getResultList();
-	}
+    @Override
+    public List<Kwet> getUserFeed(User user, int start, int count) {
+        Query namedQuery = context.createNamedQuery("Kwet.getFeed");
+        namedQuery.setFirstResult(start);
+        namedQuery.setMaxResults(count);
+        namedQuery.setParameter("username", user.getUsername());
+        return (List<Kwet>) namedQuery.getResultList();
+    }
 
     @Override
     public List<String> getTrendingKwets() {
         Query nativeQuery = context.createNativeQuery(
-                "SELECT DISTINCT TAGS " +
-                "FROM kwetter_kwet_TAGS " +
-                "WHERE kwetter_kwet_ID IN (" +
-                "   SELECT ID " +
-                "   FROM KWETTER_KWET " +
-                "   WHERE POSTED > DATE_SUB(now(), INTERVAL 1 MONTH) " +
-                "   ORDER BY POSTED DESC) " + // NOTE: MariaDB doesn't support LIMIT in subquery
-                "ORDER BY count(TAGS) " +
-                "LIMIT 5;");
-        return (List<String>)nativeQuery.getResultList();
+                "SELECT TAGS " +
+                        "FROM kwetter_kwet_TAGS " +
+                        "WHERE kwetter_kwet_ID IN (" +
+                        "   SELECT ID " +
+                        "   FROM KWETTER_KWET " +
+                        "   WHERE POSTED > DATE_SUB(now(), INTERVAL 1 MONTH) " +
+                        "   ORDER BY POSTED DESC) " + // NOTE: MariaDB doesn't support LIMIT in subquery
+                        "GROUP BY TAGS " +
+                        "ORDER BY count(TAGS) DESC " +
+                        "LIMIT 5;");
+        return (List<String>) nativeQuery.getResultList();
     }
 }
