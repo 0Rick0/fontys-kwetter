@@ -11,37 +11,26 @@
         <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
         <link rel="stylesheet" type="text/css" href="styles/style.css"/>
     </h:head>
-    <div id="header">
-        <div class="search">
-            <form action="search.xhtml" method="get">
-                <input type="text" name="search" id="form"/>
-                <input type="submit" value="Search"/>
-            </form>
-        </div>
-    </div>
-    <div id="twocolContainer">
-        <div class="colTwoCol">
-            <div id="newTweetForm">
-                New Tweet
-            </div>
-            <div id="timeline">
-                <p:tabView dynamic="true" cache="true">
-                    <p:tab title="Feed">
-                        <ul id="kwetFeed">
-                            <ui:repeat value="#{feedBean.feed}" var="kwet">
-                                <ul class="kwet">
-                                    <span class="username">#{kwet.kwetBy.username}</span>
-                                    <span class="text">#{kwet.text}</span>
-                                </ul>
-                            </ui:repeat>
-                        </ul>
-                    </p:tab>
-                    <p:tab title="Mentions">
-                        Mentions
-                    </p:tab>
-                </p:tabView>
-            </div>
-        </div><div class="colTwoCol">
+    <h:body>
+        <ui:include src="WEB-INF/header.xhtml"/>
+        <div id="twocolContainer">
+            <div class="colTwoCol">
+                <div id="timeline">
+                    <h1>
+                        <h:outputFormat value="#{local['tagsearch.title']}">
+                            <f:param value="#{param['tag']}"/>
+                        </h:outputFormat>
+                    </h1>
+                    <ul id="kwetFeed">
+                        <ui:repeat value="#{feedBean.kwetsInTag}" var="kwet">
+                            <li class="kwet">
+                                <span class="username">#{kwet.kwetBy.username}</span>
+                                <span class="text">#{kwet.text}</span>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </div>
+            </div><div class="colTwoCol">
             <div id="me">
                 Me
             </div>
@@ -57,6 +46,6 @@
                 </ul>
             </div>
         </div>
-    </div>
-
+        </div>
+    </h:body>
 </html>

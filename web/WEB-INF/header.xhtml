@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:view>
+    <div id="header">
+        <span class="search">
+            <h:form target="search">
+                <h:inputText value="#{search.query}" id="search" pt:placeholder="#{local['search.placeholder']}" />
+                <h:commandButton value="#{local['search.button']}"  />
+            </h:form>
+        </span>
+        <span class="languangeSelect">
+                <h:form>
+                    <p:outputLabel value="#{local['language.select']}"/>
+                    <h:selectOneMenu value="#{locale.localeCode}" onchange="submit()"
+                                     valueChangeListener="#{locale.countryLocaleCodeChanged}">
+                    <f:selectItems value="#{locale.countries}"/>
+                </h:selectOneMenu>
+            </h:form>
+        </span>
+        <span class="loginoutform">
+            <h:form>
+                <h:outputLink value="login.html" rendered="#{empty request.remoteUser}">
+                    <h:outputText value="#{local['login.login']}"/>
+                </h:outputLink>
+                <h:commandLink value="#{local['login.logout']}" action="#{feedBean.logout}" rendered="#{not empty request.remoteUser}"/>
+            </h:form>
+        </span>
+    </div>
+</f:view>
+</html>

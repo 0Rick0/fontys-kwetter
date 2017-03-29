@@ -8,7 +8,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rick on 3/22/17.
@@ -24,24 +27,58 @@ public class feedBean {
     private User user;
 
     public feedBean() {
-        username = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        Principal userPrincipal = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
+        if(userPrincipal!=null)
+            username = userPrincipal.getName();
+        else
+            username = null;
     }
 
-    public List<Kwet> getFeed(){
+    public List<Kwet> getFeed() {
+        if(username == null)
+            return Collections.emptyList();
         return service.getUserFeed(getUser(), 0, 10);  //todo improve
     }
 
-    public List<String> getTrendingTags(){
+    public List<Kwet> getKwetsInTag() {
+        Map<String, String> requestParameters = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (!requestParameters.containsKey("tag")) {
+            return Collections.emptyList();
+        }
+
+        int start = 0, count = 25;
+
+        if(requestParameters.containsKey("start"))
+            start = tryParseInt(requestParameters.get("start"), start);
+        if(requestParameters.containsKey("count"))
+            start = tryParseInt(requestParameters.get("count"), count);
+
+        return service.getKwetsByTag(requestParameters.get("tag"), start, count);
+    }
+
+    public List<String> getTrendingTags() {
         return service.getTrendingKwets();
     }
 
     public User getUser() {
-        if(user == null)
+        if (user == null)
             user = service.getUser(username);
         return user;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
+    }
+
+    public void logout(){
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+    }
+
+    private int tryParseInt(String str, int fallback){
+        try{
+            return Integer.parseInt(str);
+        }catch (NumberFormatException nfe){
+            return fallback;
+        }
     }
 }

@@ -13,51 +13,36 @@
         <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
         <link rel="stylesheet" type="text/css" href="styles/style.css"/>
     </h:head>
-    <div id="header">
-        <span class="search">
-            <h:form target="search">
-                <h:inputText value="#{search.query}" id="search" pt:placeholder="#{local['search.placeholder']}" />
-                <h:commandButton value="#{local['search.button']}"  />
-            </h:form>
-        </span>
-        <span class="languangeSelect">
-                <h:form>
-                <p:outputLabel value="#{local['language.select']}"/>
-                    <h:selectOneMenu value="#{locale.localeCode}" onchange="submit()"
-                                     valueChangeListener="#{locale.countryLocaleCodeChanged}">
-                    <f:selectItems value="#{locale.countries}"/>
-                </h:selectOneMenu>
-            </h:form>
-        </span>
-    </div>
-    <div id="twocolContainer">
-        <div class="colTwoCol">
-            <div id="newTweetForm">
-                <h:form id="postKwetForm">
-                    <h:inputTextarea value="#{poster.text}" required="true" id="postKwetText" pt:placeholder="#{local['kwet.post.placeholder']}"/>
-                    <h:commandButton value="#{local['kwet.post']}" action="#{poster.postKwet}"/>
-                    <h:messages/>
-                    <h:outputText value="#{poster.result == null ? '' : local[poster.result]}"/>
-                </h:form>
-            </div>
-            <div id="timeline">
-                <p:tabView dynamic="true" cache="true">
-                    <p:tab title="#{local['feed.title']}">
-                        <ul id="kwetFeed">
-                            <ui:repeat value="#{feedBean.feed}" var="kwet">
-                                <ul class="kwet">
-                                    <span class="username">#{kwet.kwetBy.username}</span>
-                                    <span class="text">#{kwet.text}</span>
-                                </ul>
-                            </ui:repeat>
-                        </ul>
-                    </p:tab>
-                    <p:tab title="#{local['mentions.title']}">
-                        Mentions
-                    </p:tab>
-                </p:tabView>
-            </div>
-        </div><div class="colTwoCol">
+    <h:body>
+        <ui:include src="WEB-INF/header.xhtml"/>
+        <div id="twocolContainer">
+            <div class="colTwoCol">
+                <div id="newTweetForm">
+                    <h:form id="postKwetForm" rendered="#{not empty request.remoteUser}">
+                        <h:inputTextarea value="#{poster.text}" required="true" id="postKwetText" pt:placeholder="#{local['kwet.post.placeholder']}"/>
+                        <h:commandButton value="#{local['kwet.post']}" action="#{poster.postKwet}"/>
+                        <h:messages/>
+                        <h:outputText value="#{poster.result == null ? '' : local[poster.result]}"/>
+                    </h:form>
+                </div>
+                <div id="timeline">
+                    <p:tabView dynamic="true" cache="true">
+                        <p:tab title="#{local['feed.title']}">
+                            <ul id="kwetFeed">
+                                <ui:repeat value="#{feedBean.feed}" var="kwet">
+                                    <li class="kwet">
+                                        <span class="username">#{kwet.kwetBy.username}</span>
+                                        <span class="text">#{kwet.text}</span>
+                                    </li>
+                                </ui:repeat>
+                            </ul>
+                        </p:tab>
+                        <p:tab title="#{local['mentions.title']}">
+                            Mentions
+                        </p:tab>
+                    </p:tabView>
+                </div>
+            </div><div class="colTwoCol">
             <div id="me">
                 <img src="#{feedBean.user.profilePicture}" width="256" height="256" alt="#{feedBean.username}'s profile picture"/>
                 <div id="userinfo">
@@ -106,5 +91,6 @@
                 </ul>
             </div>
         </div>
-    </div>
+        </div>
+    </h:body>
 </html>
