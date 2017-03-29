@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<job id="createinit" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <properties>
+        <property name="userfile" value="users.txt"/>
+        <property name="kwetfile" value="kwets.txt"/>
+    </properties>
+    <step id="loadUsers" next="loadKwets">
+        <chunk checkpoint-policy="item" item-count="10">
+            <reader ref="UserReader"/>
+            <processor ref="UserProcessor"/>
+            <writer ref="UserWriter"/>
+        </chunk>
+    </step>
+    <step id="loadKwets">
+        <chunk checkpoint-policy="item" item-count="10">
+            <reader ref="KwetReader"/>
+            <processor ref="KwetProcessor"/>
+            <writer ref="KwetWriter"/>
+        </chunk>
+    </step>
+</job>

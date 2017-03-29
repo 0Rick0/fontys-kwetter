@@ -105,5 +105,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.derby:derby:10.13.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:2.0.2-beta" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:5.3" level="project" />
+    <orderEntry type="library" name="javax.batch-api-1.0" level="project" />
   </component>
 </module>

@@ -59,7 +59,7 @@
             </div>
         </div><div class="colTwoCol">
             <div id="me">
-                <!--TODO profile picture-->
+                <img src="#{feedBean.user.profilePicture}" width="256" height="256" alt="#{feedBean.username}'s profile picture"/>
                 <div id="userinfo">
                     <span class="me username"><h:outputText value="#{feedBean.username}"/></span>
                 </div>
@@ -72,7 +72,7 @@
                     <ul class="followingList">
                         <ui:repeat  value="#{feedBean.user.following}" var="following">
                             <li class="user">
-                                <!--TODO profile pic-->
+                                <img src="#{following.profilePicture}" width="64" height="64" alt="#{following.username}'s profile picture"/>
                                 <span class="username"><h:outputText value="#{following.username}"/></span>
                             </li>
                         </ui:repeat>
@@ -85,9 +85,9 @@
                         </h:outputFormat>
                     </span>
                     <ul class="followedByList">
-                        <ui:repeat value="#{feedBean.user.following}" var="followedBy">
+                        <ui:repeat value="#{feedBean.user.followedBy}" var="followedBy">
                             <li class="user">
-                                <!--TODO profile pic-->
+                                <img src="#{followedBy.profilePicture}" width="128" height="128" alt="#{followedBy.username}'s profile picture"/>
                                 <span class="username"><h:outputText value="#{followedBy.username}"/></span>
                             </li>
                         </ui:repeat>

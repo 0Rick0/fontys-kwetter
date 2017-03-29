@@ -40,6 +40,7 @@ public class User {
 	/**
 	 * base64 image
 	 */
+	@Column(columnDefinition = "MEDIUMTEXT CHARACTER SET ascii")
 	private String profilePicture;
 	@ManyToMany
     @JoinTable(
