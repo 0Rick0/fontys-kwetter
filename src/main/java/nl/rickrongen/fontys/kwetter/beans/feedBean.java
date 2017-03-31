@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static nl.rickrongen.fontys.kwetter.Util.*;
+
 /**
  * Created by rick on 3/22/17.
  */
@@ -72,13 +74,5 @@ public class feedBean {
 
     public void logout(){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-    }
-
-    private int tryParseInt(String str, int fallback){
-        try{
-            return Integer.parseInt(str);
-        }catch (NumberFormatException nfe){
-            return fallback;
-        }
     }
 }

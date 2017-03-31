@@ -24,7 +24,11 @@
                     <ul id="kwetFeed">
                         <ui:repeat value="#{feedBean.kwetsInTag}" var="kwet">
                             <li class="kwet">
-                                <span class="username">#{kwet.kwetBy.username}</span>
+                                <span class="username">
+                                    <h:link value="#{kwet.kwetBy.username}" outcome="user">
+                                        <f:param name="username" value="#{kwet.kwetBy.username}"/>
+                                    </h:link>
+                                </span>
                                 <span class="text">#{kwet.text}</span>
                             </li>
                         </ui:repeat>
