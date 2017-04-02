@@ -1,8 +1,8 @@
 package nl.rickrongen.fontys.kwetter.beans;
 
-import javax.faces.bean.SessionScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class LocaleBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String localeCode;
+    private Locale locale;
 
     private static Map<String, String> countries;
 
@@ -28,21 +28,29 @@ public class LocaleBean implements Serializable {
         countries.put("Dutch (Netherlands)", "nl_nl");
     }
 
+    @PostConstruct
+    public void init() {
+        if(locale != null){
+            FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+        }else{
+        }
+    }
+
     public Map<String, String> getCountries() {
         return countries;
     }
 
     public String getLocaleCode() {
-        return FacesContext.getCurrentInstance().getViewRoot().getLocale().toString();
+        return locale == null ? null : locale.toString();
     }
 
-    public void setLocaleCode(String localeCode) {
-        this.localeCode = localeCode;
+    public void setLocaleCode(String localeCode){
+        locale = new Locale(localeCode);
+        FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+        System.out.println("locale updated to " + locale.toString());
     }
 
-    public void countryLocaleCodeChanged(ValueChangeEvent e) {
-        Locale lc = new Locale(e.getNewValue().toString());
-        setLocaleCode(lc.toString());
-        FacesContext.getCurrentInstance().getViewRoot().setLocale(lc);
+    public Locale getLocale(){
+        return locale;
     }
 }

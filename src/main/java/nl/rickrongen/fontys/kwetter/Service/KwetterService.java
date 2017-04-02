@@ -5,10 +5,7 @@ import nl.rickrongen.fontys.kwetter.Domain.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -120,10 +117,10 @@ public class KwetterService{
 	 * Search for kwets, not yet implemented
 	 * @param query The search query
 	 */
-	public List<Kwet> searchKwets(String query) {
-		// TODO - implement KwetterService.searchKwets
-		throw new UnsupportedOperationException();
-	}
+	public List<Kwet> searchKwets(String query, int start, int count) {
+        String[] split = query.split(" ");
+        return kwetterDao.searchKwets(Arrays.asList(split), null, null, start, count);
+    }
 
 	/**
 	 * Get the kwets of a specific user

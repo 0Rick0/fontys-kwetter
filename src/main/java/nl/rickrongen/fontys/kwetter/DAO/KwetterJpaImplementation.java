@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -126,22 +127,13 @@ public class KwetterJpaImplementation implements IKwetterDao {
 
     @Override
     public List<Kwet> searchKwets(List<String> texts, List<String> tags, List<String> mentions, int start, int count) {
-        return null;
+        String param = "(" + String.join(
+                "|",
+                texts.stream().map(s -> Pattern.quote(s)).collect(Collectors.toList())) + ")"; //build regex
+        Query namedQuery = context.createNamedQuery("kwet.native.searchregexp");
+        namedQuery.setParameter(1, param);
+        return (List<Kwet>) namedQuery.getResultList();
     }
-
-//	@Override
-//	public int getFollowerCount(String username) {
-//	    Query namedQuery = context.createNamedQuery("User.getFollowingCount");
-//	    namedQuery.setParameter("username", username);
-//	    return (int) ((Long)namedQuery.getSingleResult()).longValue();
-//	}
-//
-//	@Override
-//	public int getFollowingCount(String username) {
-//        Query namedQuery = context.createNamedQuery("User.getFollowedByCount");
-//        namedQuery.setParameter("username", username);
-//        return (int) ((Long)namedQuery.getSingleResult()).longValue();
-//	}
 
     @Override
     public Kwet getKwetById(int id) {

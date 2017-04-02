@@ -35,6 +35,7 @@ public class KwetBean {
         if(kwet != null){
             newKwet = kwet;
             result = "post.success";
+            text = ""; //clear form
             return;
         }
         result = "post.fail";

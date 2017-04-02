@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<f:view>
+    <div id="me">
+        <img src="#{feedBean.user.profilePicture}" width="256" height="256"
+             alt="#{feedBean.username}'s profile picture"/>
+        <div id="userinfo">
+            <span class="me username"><h:outputText value="#{feedBean.username}"/></span>
+        </div>
+        <div id="following">
+                    <span class="followedByCount count">
+                        <h:outputFormat value="#{local['following.following.count']}">
+                            <f:param value="#{fn:length(feedBean.user.following)}"/>
+                        </h:outputFormat>
+                    </span>
+            <ul class="followingList">
+                <ui:repeat value="#{feedBean.user.following}" var="following">
+                    <li class="user">
+                        <img src="#{following.profilePicture}" width="64" height="64"
+                             alt="#{following.username}'s profile picture"/>
+                        <span class="username"><h:outputText value="#{following.username}"/></span>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </div>
+        <div id="followedBy">
+                    <span class="followedByCount count">
+                        <h:outputFormat value="#{local['following.followedBy.count']}">
+                            <f:param value="#{fn:length(feedBean.user.followedBy)}"/>
+                        </h:outputFormat>
+                    </span>
+            <ul class="followedByList">
+                <ui:repeat value="#{feedBean.user.followedBy}" var="followedBy">
+                    <li class="user">
+                        <img src="#{followedBy.profilePicture}" width="128" height="128"
+                             alt="#{followedBy.username}'s profile picture"/>
+                        <span class="username"><h:outputText value="#{followedBy.username}"/></span>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </div>
+    </div>
+    <div id="trends">
+        <ul id="trendsList">
+            <ui:repeat value="#{feedBean.trendingTags}" var="tag">
+                <li class="trendingtopic">
+                    <h:link outcome="tag" value="\##{tag}">
+                        <f:param name="tag" value="#{tag}"/>
+                    </h:link>
+                </li>
+            </ui:repeat>
+        </ul>
+    </div>
+</f:view>
+</html>

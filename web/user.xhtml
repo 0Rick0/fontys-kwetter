@@ -8,13 +8,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+<f:view locale="#{locale.locale}">
     <h:head>
         <title>Kwetter</title>
         <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
         <link rel="stylesheet" type="text/css" href="styles/style.css"/>
     </h:head>
     <h:body>
-        <ui:include src="WEB-INF/header.xhtml"/>
+        <ui:include src="includes/header.xhtml"/>
         <div id="onecolContainer">
             <h1 class="largeusername"><h:outputText value="#{user.username}"/></h1>
             <ul id="kwetFeed">
@@ -31,4 +32,5 @@
             </ul>
         </div>
     </h:body>
+</f:view>
 </html>

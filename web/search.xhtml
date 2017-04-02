@@ -4,15 +4,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:view locale="#{locale.locale}">
     <h:head>
-        <title>Kwetter - Search </title>
+        <title>Kwetter</title>
+        <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
+        <link rel="stylesheet" type="text/css" href="styles/style.css"/>
     </h:head>
     <h:body>
-        <f:metadata>
-            <!--<f:viewParam name="search" value="#{search.query}" required="true"/>-->
-        </f:metadata>
-
-        <h:outputLabel value="#{search.query}"/>
+        <ui:include src="includes/header.xhtml"/>
+        <div id="twocolContainer">
+            <div class="colTwoCol">
+                <div id="timeline">
+                    <div class="searchform">
+                        <h:form id="ajaxsearchForm">
+                            <h:inputText value="#{search.query}" pt:placeholder="#{local['search.placeholder']}"
+                                         id="searchquery" required="true"/>
+                            <h:commandButton action="#{search.search}" value="#{local['search.button']}">
+                                <f:ajax execute="ajaxsearchForm"
+                                        render="ajaxsearchForm :feedContainer"/>
+                            </h:commandButton>
+                        </h:form>
+                    </div>
+                    <h:panelGroup id="feedContainer">
+                        <ul id="kwetFeed">
+                            <ui:repeat value="#{search.results}" var="kwet">
+                                <li class="kwet">
+                                    <span class="username">
+                                        <h:link value="#{kwet.kwetBy.username}" outcome="user">
+                                            <f:param name="username" value="#{kwet.kwetBy.username}"/>
+                                        </h:link>
+                                    </span>
+                                    <span class="text">#{kwet.text}</span>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </h:panelGroup>
+                </div>
+            </div>
+            <div class="colTwoCol">
+                <ui:include src="includes/sidebar.xhtml"/>
+            </div>
+        </div>
     </h:body>
+</f:view>
 </html>

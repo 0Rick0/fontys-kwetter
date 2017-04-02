@@ -10,18 +10,17 @@
 <f:view>
     <div id="header">
         <span class="search">
-            <h:form target="search">
-                <h:inputText value="#{search.query}" id="search" pt:placeholder="#{local['search.placeholder']}" />
-                <h:commandButton value="#{local['search.button']}"  />
+            <h:form id="searchform">
+                <h:inputText value="#{search.query}" id="search" pt:placeholder="#{local['search.placeholder']}"/>
+                <h:commandButton value="#{local['search.button']}" action="#{search.go}"/>
             </h:form>
         </span>
         <span class="languangeSelect">
                 <h:form>
                     <p:outputLabel value="#{local['language.select']}"/>
-                    <h:selectOneMenu value="#{locale.localeCode}" onchange="submit()"
-                                     valueChangeListener="#{locale.countryLocaleCodeChanged}">
-                    <f:selectItems value="#{locale.countries}"/>
-                </h:selectOneMenu>
+                    <h:selectOneMenu value="#{locale.localeCode}" onchange="submit()">
+                        <f:selectItems value="#{locale.countries}"/>
+                    </h:selectOneMenu>
             </h:form>
         </span>
         <span class="loginoutform">
@@ -29,7 +28,8 @@
                 <h:outputLink value="login.html" rendered="#{empty request.remoteUser}">
                     <h:outputText value="#{local['login.login']}"/>
                 </h:outputLink>
-                <h:commandLink value="#{local['login.logout']}" action="#{feedBean.logout}" rendered="#{not empty request.remoteUser}"/>
+                <h:commandLink value="#{local['login.logout']}" action="#{feedBean.logout}"
+                               rendered="#{not empty request.remoteUser}"/>
             </h:form>
         </span>
     </div>

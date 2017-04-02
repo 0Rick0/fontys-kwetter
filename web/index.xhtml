@@ -8,26 +8,30 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+<f:view locale="#{locale.locale}">
     <h:head>
         <title>Kwetter</title>
         <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
         <link rel="stylesheet" type="text/css" href="styles/style.css"/>
     </h:head>
     <h:body>
-        <ui:include src="WEB-INF/header.xhtml"/>
+        <ui:include src="includes/header.xhtml"/>
         <div id="twocolContainer">
             <div class="colTwoCol">
                 <div id="newTweetForm">
                     <h:form id="postKwetForm" rendered="#{not empty request.remoteUser}">
-                        <h:inputTextarea value="#{poster.text}" required="true" id="postKwetText" pt:placeholder="#{local['kwet.post.placeholder']}"/>
-                        <h:commandButton value="#{local['kwet.post']}" action="#{poster.postKwet}"/>
+                        <h:inputTextarea value="#{poster.text}" required="true" id="postKwetText"
+                                         pt:placeholder="#{local['kwet.post.placeholder']}"/>
+                        <h:commandButton value="#{local['kwet.post']}" action="#{poster.postKwet}">
+                            <f:ajax execute="postKwetForm" render="postKwetForm :kwetMentionTab:kwetFeedContainer"/>
+                        </h:commandButton>
                         <h:messages/>
                         <h:outputText value="#{poster.result == null ? '' : local[poster.result]}"/>
                     </h:form>
                 </div>
                 <div id="timeline">
-                    <p:tabView dynamic="true" cache="true">
-                        <p:tab title="#{local['feed.title']}">
+                    <p:tabView dynamic="true" cache="true" id="kwetMentionTab">
+                        <p:tab title="#{local['feed.title']}" id="kwetFeedContainer">
                             <ul id="kwetFeed">
                                 <ui:repeat value="#{feedBean.feed}" var="kwet">
                                     <li class="kwet">
@@ -46,55 +50,11 @@
                         </p:tab>
                     </p:tabView>
                 </div>
-            </div><div class="colTwoCol">
-            <div id="me">
-                <img src="#{feedBean.user.profilePicture}" width="256" height="256" alt="#{feedBean.username}'s profile picture"/>
-                <div id="userinfo">
-                    <span class="me username"><h:outputText value="#{feedBean.username}"/></span>
-                </div>
-                <div id="following">
-                    <span class="followedByCount count">
-                        <h:outputFormat value="#{local['following.following.count']}">
-                            <f:param value="#{fn:length(feedBean.user.following)}"/>
-                        </h:outputFormat>
-                    </span>
-                    <ul class="followingList">
-                        <ui:repeat  value="#{feedBean.user.following}" var="following">
-                            <li class="user">
-                                <img src="#{following.profilePicture}" width="64" height="64" alt="#{following.username}'s profile picture"/>
-                                <span class="username"><h:outputText value="#{following.username}"/></span>
-                            </li>
-                        </ui:repeat>
-                    </ul>
-                </div>
-                <div id="followedBy">
-                    <span class="followedByCount count">
-                        <h:outputFormat value="#{local['following.followedBy.count']}">
-                            <f:param value="#{fn:length(feedBean.user.followedBy)}"/>
-                        </h:outputFormat>
-                    </span>
-                    <ul class="followedByList">
-                        <ui:repeat value="#{feedBean.user.followedBy}" var="followedBy">
-                            <li class="user">
-                                <img src="#{followedBy.profilePicture}" width="128" height="128" alt="#{followedBy.username}'s profile picture"/>
-                                <span class="username"><h:outputText value="#{followedBy.username}"/></span>
-                            </li>
-                        </ui:repeat>
-                    </ul>
-                </div>
             </div>
-            <div id="trends">
-                <ul id="trendsList">
-                    <ui:repeat value="#{feedBean.trendingTags}" var="tag">
-                        <li class="trendingtopic">
-                            <h:link outcome="tag"  value="\##{tag}">
-                                <f:param name="tag" value="#{tag}"/>
-                            </h:link>
-                        </li>
-                    </ui:repeat>
-                </ul>
+            <div class="colTwoCol">
+                <ui:include src="includes/sidebar.xhtml"/>
             </div>
-        </div>
         </div>
     </h:body>
+</f:view>
 </html>

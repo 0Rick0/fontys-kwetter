@@ -21,6 +21,11 @@ import java.util.*;
 				"AND k MEMBER OF u2.kwets " +
 				"ORDER BY k.posted DESC")
 })
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "kwet.native.searchregexp",
+                query = "SELECT * FROM KWETTER_KWET WHERE text REGEXP ?",
+                resultClass = Kwet.class)
+})
 public class Kwet implements Serializable{
 
     @Id
