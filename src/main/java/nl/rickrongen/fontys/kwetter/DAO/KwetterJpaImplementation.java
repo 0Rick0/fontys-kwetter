@@ -9,10 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -122,6 +119,8 @@ public class KwetterJpaImplementation implements IKwetterDao {
         namedQuery.setFirstResult(start);
         namedQuery.setMaxResults(count);
         List resultList = namedQuery.getResultList();
+        if(start == 0 && count == 1)
+            context.refresh(resultList.get(0));
         return (List<Kwet>) resultList;
     }
 
@@ -186,5 +185,15 @@ public class KwetterJpaImplementation implements IKwetterDao {
                         "ORDER BY count(TAGS) DESC " +
                         "LIMIT 5;");
         return (List<String>) nativeQuery.getResultList();
+    }
+
+    @Override
+    public List<Kwet> getMentions(User user, int start, int count) {
+//        Query namedQuery = context.createNamedQuery("Kwet.getMentions");
+//        namedQuery.setFirstResult(start);
+//        namedQuery.setMaxResults(count);
+//        namedQuery.setParameter("username", user.getUsername());
+//        return (List<Kwet>) namedQuery.getResultList();
+        return Collections.emptyList();
     }
 }

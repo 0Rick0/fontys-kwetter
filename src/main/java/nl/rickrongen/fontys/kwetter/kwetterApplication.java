@@ -1,5 +1,7 @@
 package nl.rickrongen.fontys.kwetter;
 
+import nl.rickrongen.fontys.kwetter.RestApi.AllowCORS;
+import nl.rickrongen.fontys.kwetter.RestApi.CustomUnauth;
 import nl.rickrongen.fontys.kwetter.RestApi.KwetterKwetsApi;
 import nl.rickrongen.fontys.kwetter.RestApi.KwetterUserApi;
 
@@ -20,6 +22,10 @@ public class kwetterApplication extends Application{
         //add apis
         h.add( KwetterUserApi.class );
         h.add( KwetterKwetsApi.class );
+
+        //CORS filter
+        h.add(AllowCORS.class );
+        h.add(CustomUnauth.class);
 
         //add jackson
         h.add(JacksonFeature.class);

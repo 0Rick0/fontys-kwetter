@@ -2,8 +2,10 @@ package nl.rickrongen.fontys.kwetter.Service;
 
 import nl.rickrongen.fontys.kwetter.DAO.*;
 import nl.rickrongen.fontys.kwetter.Domain.*;
+import nl.rickrongen.fontys.kwetter.interceptors.QualifiedEvent;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -14,6 +16,10 @@ public class KwetterService{
 
     private static final Pattern reHashtag = Pattern.compile("#(\\S+)");
     private static final Pattern reMention = Pattern.compile("@(\\S+)");
+
+    @Inject
+	@QualifiedEvent("PostKwet")
+    private Event<Kwet> kwetPosted;
 
 	@Inject @JPA
 	IKwetterDao kwetterDao;
@@ -108,7 +114,9 @@ public class KwetterService{
             mentions.add(kwetterDao.getUser(mentionMatcher.group(1)));
 
 	    if(kwetterDao.postKwet(actor, text, tags, new ArrayList<>(mentions))) {
-	        return kwetterDao.getKwetsOfUser(actor.getUsername(), 0, 1).get(0);
+	        Kwet k = kwetterDao.getKwetsOfUser(actor.getUsername(), 0, 1).get(0);
+	        kwetPosted.fire(k);
+	        return k;
         }
         return null;
 	}
@@ -188,4 +196,8 @@ public class KwetterService{
 	public List<String> getTrendingKwets(){
 		return kwetterDao.getTrendingKwets();
 	}
+
+    public List<Kwet> getMentions(User user, int start, int count) {
+		return kwetterDao.getMentions(user, start, count);
+    }
 }

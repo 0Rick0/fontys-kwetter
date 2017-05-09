@@ -11,14 +11,14 @@
 <f:view locale="#{locale.locale}">
     <h:head>
         <title>Kwetter</title>
-        <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
-        <link rel="stylesheet" type="text/css" href="styles/style.css"/>
+        <h:outputStylesheet name="css/reset.css"/>
+        <h:outputStylesheet name="css/style.css"/>
     </h:head>
     <h:body>
         <ui:include src="includes/header.xhtml"/>
         <div id="onecolContainer">
             <h1 class="largeusername"><h:outputText value="#{user.username}"/></h1>
-            <ul id="kwetFeed">
+            <ul id="kwetFeed" class="kwetList">
                 <ui:repeat value="#{user.kwetList}" var="kwet">
                     <li class="kwet">
                         <span class="username">

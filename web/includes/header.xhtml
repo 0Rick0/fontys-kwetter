@@ -31,6 +31,8 @@
                 <h:commandLink value="#{local['login.logout']}" action="#{feedBean.logout}"
                                rendered="#{not empty request.remoteUser}"/>
             </h:form>
+            <h:link value="#{local['login.admin']}" outcome="/admin/index.xhtml?faces-redirect=true"
+                           rendered="#{feedBean.admin}"/>
         </span>
     </div>
 </f:view>

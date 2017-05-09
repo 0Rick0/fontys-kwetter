@@ -5,9 +5,11 @@ import nl.rickrongen.fontys.kwetter.Domain.User;
 import nl.rickrongen.fontys.kwetter.Service.KwetterService;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +41,31 @@ public class feedBean {
     public List<Kwet> getFeed() {
         if(username == null)
             return Collections.emptyList();
-        return service.getUserFeed(getUser(), 0, 10);  //todo improve
+
+        Map<String, String> requestParameters = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        int start = 0, count = 25;
+
+        if(requestParameters.containsKey("start"))
+            start = tryParseInt(requestParameters.get("start"), start);
+        if(requestParameters.containsKey("count"))
+            start = tryParseInt(requestParameters.get("count"), count);
+        return service.getUserFeed(getUser(), start, count);  //todo improve
     }
+
+    public List<Kwet> getMentions(){
+        if(username == null)
+            return Collections.emptyList();
+
+        Map<String, String> requestParameters = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        int start = 0, count = 25;
+
+        if(requestParameters.containsKey("start"))
+            start = tryParseInt(requestParameters.get("start"), start);
+        if(requestParameters.containsKey("count"))
+            start = tryParseInt(requestParameters.get("count"), count);
+        return service.getMentions(getUser(), start, count);  //todo improve
+    }
+
 
     public List<Kwet> getKwetsInTag() {
         Map<String, String> requestParameters = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -72,7 +97,13 @@ public class feedBean {
         return username;
     }
 
-    public void logout(){
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+    public void logout() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        ec.redirect(ec.getApplicationContextPath() );
+    }
+
+    public boolean isAdmin() {
+        return getUser() != null && getUser().getGroups().stream().anyMatch(group -> group.getName().equals("admins"));
     }
 }

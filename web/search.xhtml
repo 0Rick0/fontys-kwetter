@@ -9,8 +9,8 @@
 <f:view locale="#{locale.locale}">
     <h:head>
         <title>Kwetter</title>
-        <link rel="stylesheet" type="text/css" href="styles/reset.css"/>
-        <link rel="stylesheet" type="text/css" href="styles/style.css"/>
+        <h:outputStylesheet name="css/reset.css"/>
+        <h:outputStylesheet name="css/style.css"/>
     </h:head>
     <h:body>
         <ui:include src="includes/header.xhtml"/>
@@ -28,7 +28,7 @@
                         </h:form>
                     </div>
                     <h:panelGroup id="feedContainer">
-                        <ul id="kwetFeed">
+                        <ul id="kwetFeed" class="kwetList">
                             <ui:repeat value="#{search.results}" var="kwet">
                                 <li class="kwet">
                                     <span class="username">

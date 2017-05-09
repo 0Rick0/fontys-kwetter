@@ -148,4 +148,9 @@ public class KwetterCollectionImplementation implements IKwetterDao {
 				.sorted(Map.Entry.<String, Long> comparingByValue(reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
 				.limit(5).map(Map.Entry::getKey).collect(Collectors.toList());
 	}
+
+	@Override
+	public List<Kwet> getMentions(User user, int start, int count) {
+		return user.getMentionedIn().stream().skip(start).limit(count).collect(Collectors.toList());
+	}
 }

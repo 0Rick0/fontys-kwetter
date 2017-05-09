@@ -15,24 +15,14 @@
         <h:outputStylesheet name="css/style.css"/>
     </h:head>
     <h:body>
-        <ui:include src="includes/header.xhtml"/>
+        <ui:include src="/includes/header.xhtml"/>
         <div id="twocolContainer">
             <div class="colTwoCol">
-                <div id="newTweetForm">
-                    <h:form id="postKwetForm" rendered="#{not empty request.remoteUser}">
-                        <h:inputTextarea value="#{poster.text}" required="true" id="postKwetText"
-                                         pt:placeholder="#{local['kwet.post.placeholder']}"/>
-                        <h:commandButton value="#{local['kwet.post']}" action="#{poster.postKwet}">
-                            <f:ajax execute="postKwetForm" render="postKwetForm :kwetMentionTab:kwetFeedContainer"/>
-                        </h:commandButton>
-                        <h:messages/>
-                        <h:outputText value="#{poster.result == null ? '' : local[poster.result]}"/>
-                    </h:form>
-                </div>
                 <div id="timeline">
+                    <h1>Admin Page, TODO IMPLEMENT</h1>
                     <p:tabView dynamic="true" cache="true" id="kwetMentionTab">
                         <p:tab title="#{local['feed.title']}" id="kwetFeedContainer">
-                            <ul id="kwetFeed" class="kwetList">
+                            <ul id="kwetFeed">
                                 <ui:repeat value="#{feedBean.feed}" var="kwet">
                                     <li class="kwet">
                                         <span class="username">
@@ -46,24 +36,13 @@
                             </ul>
                         </p:tab>
                         <p:tab title="#{local['mentions.title']}">
-                            <ul id="kwetMentions" class="kwetList">
-                                <ui:repeat value="#{feedBean.mentions}" var="kwet">
-                                    <li class="kwet">
-                                        <span class="username">
-                                            <h:link value="#{kwet.kwetBy.username}" outcome="user">
-                                                <f:param name="username" value="#{kwet.kwetBy.username}"/>
-                                            </h:link>
-                                        </span>
-                                        <span class="text">#{kwet.text}</span>
-                                    </li>
-                                </ui:repeat>
-                            </ul>
+                            Mentions
                         </p:tab>
                     </p:tabView>
                 </div>
             </div>
             <div class="colTwoCol">
-                <ui:include src="includes/sidebar.xhtml"/>
+                <ui:include src="/includes/sidebar.xhtml"/>
             </div>
         </div>
     </h:body>
